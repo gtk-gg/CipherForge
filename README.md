@@ -25,11 +25,11 @@
 ```bash
 git clone https://github.com/gtk-gg/CipherForge.git
 ```
-#### Select the Directory
+### Select the Directory
 ```bash
 cd CipherForge
 ```
-### Install Requirements.txt
+### Install Requirements
 ```bash
 pip install -r requirements.txt
 ```
