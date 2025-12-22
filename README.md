@@ -21,19 +21,21 @@
 ## 📦 **Installation**
 
 ### **Method 1: Direct Download**
+# Clone the Directory via Git
 ```bash
-# Download the script
 git clone https://github.com/gtk-gg/CipherForge.git
-cd CipherForge
-
-# Run directly
-python cipherforge.py
 ```
-
-### **Method 2: One-Line Install (Coming Soon)**
+# Select the Directory
 ```bash
-# Install via pip (future release)
-pip install cipherforge
+cd CipherForge
+```
+# Install Requirements.txt
+```bash
+pip install -r requirements.txt
+```
+# Run the main script
+```bash
+python cipherforge.py
 ```
 
 ## 🚀 **Quick Start Guide**
