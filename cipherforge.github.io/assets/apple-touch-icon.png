@@ -1,4 +1,3 @@
-# Just copy the 192x192 icon
 from PIL import Image
 import shutil
 
