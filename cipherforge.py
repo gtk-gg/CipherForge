@@ -29,15 +29,16 @@ def show_warning_header():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("""
 ╔═══════════════════════════════════════════════════════════════════╗
-║                       ⚠️  IMPORTANT WARNING  ⚠️                    ║
+║                       ⚠️  IMPORTANT WARNING  ⚠️                               ║
 ╠═══════════════════════════════════════════════════════════════════╣
-║  THIS TOOL IS FOR EDUCATIONAL PURPOSES ONLY!                      ║
-║  DO NOT USE FOR MALICIOUS ACTIVITIES OR ILLEGAL PURPOSES         ║
-║  DEVELOPER IS NOT RESPONSIBLE FOR YOUR ACTIONS!                   ║
-║                                                                   ║
-║  ⚠️  ENCRYPTION CAN BE IRREVERSIBLE WITHOUT PASSWORD!             ║
-║  ⚠️  SAVE YOUR PASSWORD SECURELY - CANNOT BE RECOVERED!          ║
-║  ⚠️  DEVELOPER IS NOT RESPONSIBLE FOR LOST PASSWORDS OR FILES!   ║
+║  THIS TOOL IS FOR EDUCATIONAL PURPOSES ONLY!                                  ║
+║  DO NOT USE FOR MALICIOUS ACTIVITIES OR ILLEGAL PURPOSES                      ║
+║  DEVELOPER IS NOT RESPONSIBLE FOR YOUR ACTIONS!                               ║
+║                                                                               ║
+║  ⚠️  ENCRYPTION CAN BE IRREVERSIBLE WITHOUT PASSWORD!                         ║
+║  ⚠️  SAVE YOUR PASSWORD SECURELY - CANNOT BE RECOVERED!                       ║
+║  ⚠️  DEVELOPER IS NOT RESPONSIBLE FOR LOST PASSWORDS OR FILES!                ║
+║  ⚠️  FOR SECURITY PURPOSE, ENCRYPTED FILE WILL BE SABED AS COPY               ║
 ╚═══════════════════════════════════════════════════════════════════╝
     """)
 
