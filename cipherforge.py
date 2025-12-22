@@ -29,7 +29,7 @@ def show_warning_header():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("""
 ╔═══════════════════════════════════════════════════════════════════╗
-║                       ⚠️  IMPORTANT WARNING  ⚠️                  ║
+║                       ⚠️  IMPORTANT WARNING  ⚠️                   ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║  THIS TOOL IS FOR EDUCATIONAL PURPOSES ONLY!                      ║
 ║  DO NOT USE FOR MALICIOUS ACTIVITIES OR ILLEGAL PURPOSES          ║
