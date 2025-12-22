@@ -34,7 +34,7 @@
     </g>
     
     <!-- Text -->
-    <text x="128" y="220" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="14">
+    <text x="128" y="225" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="14">
         CipherForge
     </text>
 </svg>
