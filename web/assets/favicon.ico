@@ -1,0 +1,12 @@
+from PIL import Image, ImageDraw
+
+# Create a simple 64x64 icon with a lock
+img = Image.new('RGBA', (64, 64), (44, 62, 80, 255))
+draw = ImageDraw.Draw(img)
+
+# Draw a lock
+draw.rectangle([20, 25, 44, 45], fill=(52, 152, 219, 255))
+draw.arc([25, 15, 39, 29], 0, 180, fill=(52, 152, 219, 255), width=3)
+draw.rectangle([30, 30, 34, 38], fill=(44, 62, 80, 255))
+
+img.save('assets/favicon.ico', format='ICO', sizes=[(64, 64), (32, 32), (16, 16)])

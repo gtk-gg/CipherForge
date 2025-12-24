@@ -1,0 +1,5 @@
+from PIL import Image
+import shutil
+
+img = Image.open('assets/icon-192.png')
+img.save('assets/apple-touch-icon.png')
