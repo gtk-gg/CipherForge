@@ -1,68 +1,38 @@
-let selectedFile, action;
-
-const show = id => {
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-};
-
-document.getElementById("acceptBtn").onclick = () => show("screen-file");
-
-const dropZone = document.getElementById("dropZone");
-const fileInput = document.getElementById("fileInput");
-
-document.body.ondragover = e => e.preventDefault();
-document.body.ondrop = e => {
-  e.preventDefault();
-  selectedFile = e.dataTransfer.files[0];
-  show("screen-action");
-};
-
-dropZone.onclick = () => fileInput.click();
-
-fileInput.onchange = () => {
-  selectedFile = fileInput.files[0];
-  show("screen-action");
-};
-
-document.getElementById("encryptBtn").onclick = () => {
-  action = "encrypt";
-  show("screen-password");
-};
-
-document.getElementById("decryptBtn").onclick = () => {
-  action = "decrypt";
-  show("screen-password");
-};
-
-document.getElementById("proceedBtn").onclick = async () => {
-  const pwd = document.getElementById("passwordInput").value;
-  if (!pwd) return alert("Password required");
-
-  show("screen-status");
-  const status = document.getElementById("statusText");
-  status.textContent = action === "encrypt" ? "Encrypting..." : "Decrypting...";
-
+encryptBtn.addEventListener('click',async()=>{
+  if(!selectedFileObj){ alert("Select a file first"); return; }
+  const pwd = cryptoEngine.generatePassword();
+  genPassword.value = pwd;
+  passwordSection.classList.remove('hidden');
+  fileDrop.style.display='none';
   try {
-    let result;
-    if (action === "encrypt") {
-      result = await encryptData(await selectedFile.arrayBuffer(), pwd);
-    } else {
-      const data = await decryptData(selectedFile, pwd);
-      result = new Blob([data]);
-    }
-
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(result);
-    a.download =
-      action === "encrypt"
-        ? selectedFile.name + ".encrypted"
-        : selectedFile.name.replace(".encrypted", "");
-    a.click();
-
-    status.textContent = "✔ Completed";
-  } catch {
-    status.textContent = "❌ Wrong password or corrupted file";
+    const encBlob = await cryptoEngine.encryptFile(selectedFileObj,pwd);
+    downloadBlob(encBlob, selectedFileObj.name+".encrypted");
+    statusText.textContent = "Encryption completed!";
+    statusSection.classList.remove('hidden');
+  } catch(e) {
+    alert("Encryption failed: "+e.message);
   }
-};
+});
 
-document.getElementById("backBtn").onclick = () => location.reload();
+decryptBtn.addEventListener('click',async()=>{
+  if(!selectedFileObj){ alert("Select a file first"); return; }
+  const pwd = prompt("Enter password for decryption:");
+  if(!pwd) return;
+  try{
+    const decBlob = await cryptoEngine.decryptFile(selectedFileObj,pwd);
+    downloadBlob(decBlob, selectedFileObj.name.replace(".encrypted",""));
+    statusText.textContent = "Decryption completed!";
+    statusSection.classList.remove('hidden');
+  }catch(e){
+    alert("Decryption failed. Wrong password or corrupted file.");
+  }
+});
+
+function downloadBlob(blob,name){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(url);
+}
