@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById('overlay');
     const acceptBtn = document.getElementById('acceptBtn');
     const appDiv = document.getElementById('app');
+
     const fileDrop = document.getElementById('fileDrop');
     const fileInput = document.getElementById('fileInput');
     const selectedFileText = document.getElementById('selectedFile');
@@ -20,24 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedFileObj = null;
 
-    // Accept Warning
     acceptBtn.addEventListener('click', () => {
         overlay.classList.add('hidden');
         appDiv.classList.remove('hidden');
-    });
-
-    // File selection
-    fileDrop.addEventListener('click', () => fileInput.click());
-    fileDrop.addEventListener('dragover', (e) => { e.preventDefault(); fileDrop.classList.add('hover'); });
-    fileDrop.addEventListener('dragleave', () => { fileDrop.classList.remove('hover'); });
-    fileDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        fileDrop.classList.remove('hover');
-        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
-    });
-
-    fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) handleFile(e.target.files[0]);
     });
 
     function handleFile(file){
@@ -47,25 +33,35 @@ document.addEventListener("DOMContentLoaded", () => {
         decryptBtn.disabled = false;
     }
 
-    // Methods popup
+    fileDrop.addEventListener('click', () => fileInput.click());
+    fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('hover'); });
+    fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('hover'));
+    fileDrop.addEventListener('drop', e => {
+        e.preventDefault();
+        fileDrop.classList.remove('hover');
+        if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', e => {
+        if(e.target.files.length) handleFile(e.target.files[0]);
+    });
+
     methodsBtn.addEventListener('click', () => {
         alert(
             "Encryption Methods Used:\n" +
-            "1. AES-256-GCM\n" +
-            "2. PBKDF2 with SHA-256 (100,000 iterations)\n" +
+            "1. XOR-based stream cipher\n" +
+            "2. PBKDF2 SHA-256 100,000 iterations\n" +
             "3. File size preserved\n" +
-            "4. No password stored"
+            "4. No password stored, memory safe"
         );
     });
 
-    // Copy password
     copyPassword.addEventListener('click', () => {
-        if (!genPassword.value) return;
+        if(!genPassword.value) return;
         navigator.clipboard.writeText(genPassword.value);
         alert("Copied to clipboard!");
     });
 
-    // Back to main menu
     backToMenu.addEventListener('click', () => {
         statusSection.classList.add('hidden');
         passwordSection.classList.add('hidden');
@@ -73,6 +69,5 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedFileText.textContent = selectedFileObj ? selectedFileObj.name : "No file selected";
     });
 
-    // Expose file for app.js
     window.getSelectedFile = () => selectedFileObj;
 });
