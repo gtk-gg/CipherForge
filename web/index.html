@@ -17,24 +17,30 @@
     Encryption is irreversible without password.<br>
     Save your passwords securely.
   </p>
-  <button id="acceptBtn">I Accept</button>
+  <button id="acceptBtn">ACCEPT</button>
 </div>
 
 <!-- MAIN APP -->
 <div id="app" class="hidden">
-  <div id="fileDrop">Click or Drag & Drop a file here</div>
+  <h1 class="neon-title">CipherForge Web</h1>
+  
+  <div id="fileDrop" class="dropzone">
+    Click or Drag & Drop a file here
+  </div>
   <input type="file" id="fileInput" hidden>
   <p id="selectedFile">No file selected</p>
+
+  <div id="passwordOptions" class="hidden">
+    <p>Choose password option:</p>
+    <button id="ownPasswordBtn">Use My Own Password</button>
+    <button id="genPasswordBtn">Generate Strong Password</button>
+    <input type="text" id="genPassword" readonly placeholder="Generated password will appear here">
+    <button id="copyPassword">Copy</button>
+  </div>
 
   <div class="buttons">
     <button id="encryptBtn" disabled>Encrypt</button>
     <button id="decryptBtn" disabled>Decrypt</button>
-    <button id="methodsBtn">Methods</button>
-  </div>
-
-  <div id="passwordSection" class="hidden">
-    <input type="text" id="genPassword" readonly>
-    <button id="copyPassword">Copy</button>
   </div>
 
   <div id="statusSection" class="hidden">
