@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
+
     const encryptBtn = document.getElementById('encryptBtn');
     const decryptBtn = document.getElementById('decryptBtn');
     const statusSection = document.getElementById('statusSection');
@@ -14,10 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
         statusSection.classList.remove('hidden');
 
         try {
-            const blob = await window.cryptoEngine.encryptFile(file, password);
-            const url = URL.createObjectURL(blob);
+            const arrayBuffer = await file.arrayBuffer();
+            const encryptedData = await window.cryptoEngine.encrypt(arrayBuffer, password); // returns Uint8Array
+            const blob = new Blob([encryptedData], {type: "application/octet-stream"});
             const a = document.createElement('a');
-            a.href = url;
+            a.href = URL.createObjectURL(blob);
             a.download = file.name + ".encrypted";
             a.click();
             statusText.textContent = `Encryption complete: ${file.name}.encrypted`;
@@ -35,13 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
         statusSection.classList.remove('hidden');
 
         try {
-            const blob = await window.cryptoEngine.decryptFile(file, password);
-            const url = URL.createObjectURL(blob);
+            const arrayBuffer = await file.arrayBuffer();
+            const decryptedData = await window.cryptoEngine.decrypt(arrayBuffer, password); // returns Uint8Array
+
+            const originalName = file.name.replace(/\.encrypted$/,"") || "decrypted_file";
+            const blob = new Blob([decryptedData], {type: file.type || "application/octet-stream"});
             const a = document.createElement('a');
-            a.href = url;
-            let originalName = file.name.replace(/\.encrypted$/,"") || "decrypted_file";
+            a.href = URL.createObjectURL(blob);
             a.download = originalName;
             a.click();
+
             statusText.textContent = `Decryption complete: ${originalName}`;
         } catch(e){
             statusText.textContent = `Error: ${e.message}`;
@@ -51,4 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
     backToMenu.addEventListener('click', () => {
         statusSection.classList.add('hidden');
     });
+
 });
