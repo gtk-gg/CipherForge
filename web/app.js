@@ -1,56 +1,55 @@
 document.addEventListener("DOMContentLoaded", () => {
     const encryptBtn = document.getElementById('encryptBtn');
     const decryptBtn = document.getElementById('decryptBtn');
-    const passwordSection = document.getElementById('passwordSection');
-    const genPassword = document.getElementById('genPassword');
     const statusSection = document.getElementById('statusSection');
     const statusText = document.getElementById('statusText');
-
-    const cryptoEngine = new CipherForgeCrypto();
+    const backToMenu = document.getElementById('backToMenu');
 
     encryptBtn.addEventListener('click', async () => {
-        const selectedFile = window.getSelectedFile();
-        if(!selectedFile){ alert("Select a file first!"); return; }
+        const file = window.getSelectedFile();
+        const password = window.getUserPassword();
+        if(!file || !password) return;
 
-        const pwd = cryptoEngine.generatePassword(100); // ~100-char password
-        genPassword.value = pwd;
-        passwordSection.classList.remove('hidden');
+        statusText.textContent = "Encrypting...";
+        statusSection.classList.remove('hidden');
 
         try {
-            const encBlob = await cryptoEngine.encryptFile(selectedFile, pwd);
-            let safeName = selectedFile.name.replace(/\s+/g,"_").replace(/\(|\)/g,"");
-            downloadBlob(encBlob, safeName + ".encrypted");
-            statusText.textContent = "Encryption done!";
-            statusSection.classList.remove('hidden');
+            const blob = await window.cryptoEngine.encryptFile(file, password);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name + ".encrypted";
+            a.click();
+            statusText.textContent = `Encryption complete: ${file.name}.encrypted`;
         } catch(e){
-            alert("Encryption failed: "+e.message);
+            statusText.textContent = `Error: ${e.message}`;
         }
     });
 
     decryptBtn.addEventListener('click', async () => {
-        const selectedFile = window.getSelectedFile();
-        if(!selectedFile){ alert("Select a file first!"); return; }
+        const file = window.getSelectedFile();
+        const password = window.getUserPassword();
+        if(!file || !password) return;
 
-        const pwd = prompt("Enter password for decryption:");
-        if(!pwd) return;
+        statusText.textContent = "Decrypting...";
+        statusSection.classList.remove('hidden');
 
         try {
-            const decBlob = await cryptoEngine.decryptFile(selectedFile, pwd);
-            let originalName = selectedFile.name.replace(/\.encrypted$/,"");
-            downloadBlob(decBlob, originalName);
-            statusText.textContent = "Decryption done!";
-            statusSection.classList.remove('hidden');
+            const blob = await window.cryptoEngine.decryptFile(file, password);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            let originalName = file.name.replace(/\.encrypted$/,"") || "decrypted_file";
+            a.download = originalName;
+            a.click();
+            statusText.textContent = `Decryption complete: ${originalName}`;
         } catch(e){
-            alert("Decryption failed: Wrong password or corrupted file.");
+            statusText.textContent = `Error: ${e.message}`;
         }
     });
 
-    function downloadBlob(blob, filename){
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
+    backToMenu.addEventListener('click', () => {
+        statusSection.classList.add('hidden');
+    });
 });
