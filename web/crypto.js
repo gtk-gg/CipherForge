@@ -1,53 +1,80 @@
-async function deriveKey(password, salt) {
-  const enc = new TextEncoder();
-  const baseKey = await crypto.subtle.importKey(
-    "raw",
-    enc.encode(password),
-    "PBKDF2",
-    false,
-    ["deriveKey"]
-  );
+class CipherForgeCrypto {
+  constructor() {
+    this.magic = new Uint8Array([67,70,33]); // 'CF!'
+  }
 
-  return crypto.subtle.deriveKey(
-    {
-      name: "PBKDF2",
+  async deriveKey(password, salt) {
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw", enc.encode(password),
+      { name: "PBKDF2" },
+      false, ["deriveKey"]
+    );
+    return crypto.subtle.deriveKey(
+      { name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" },
+      keyMaterial,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["encrypt","decrypt"]
+    );
+  }
+
+  async encryptFile(file, password) {
+    const salt = crypto.getRandomValues(new Uint8Array(32));
+    const key = await this.deriveKey(password, salt);
+    const iv = crypto.getRandomValues(new Uint8Array(12)); // AES-GCM IV
+    const buffer = await file.arrayBuffer();
+    const encrypted = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv: iv },
+      key,
+      buffer
+    );
+
+    // Compose final Blob: magic + salt + file size (8 bytes) + iv + ciphertext
+    const sizeBuf = new ArrayBuffer(8);
+    new DataView(sizeBuf).setBigUint64(0, BigInt(file.size));
+    const blob = new Blob([
+      this.magic,
       salt,
-      iterations: 100000,
-      hash: "SHA-256"
-    },
-    baseKey,
-    { name: "AES-GCM", length: 256 },
-    false,
-    ["encrypt", "decrypt"]
-  );
-}
+      sizeBuf,
+      iv,
+      new Uint8Array(encrypted)
+    ]);
 
-async function encryptData(buffer, password) {
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const key = await deriveKey(password, salt);
+    return blob;
+  }
 
-  const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    buffer
-  );
+  async decryptFile(file, password) {
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
 
-  return new Blob([salt, iv, new Uint8Array(encrypted)]);
-}
+    // Verify magic
+    if(bytes[0]!==67 || bytes[1]!==70 || bytes[2]!==33)
+      throw new Error("Not a CipherForge encrypted file");
 
-async function decryptData(blob, password) {
-  const raw = new Uint8Array(await blob.arrayBuffer());
+    const salt = bytes.slice(3,35);
+    const size = Number(new DataView(bytes.buffer,35,8).getBigUint64(0));
+    const iv = bytes.slice(43,55);
+    const ciphertext = bytes.slice(55);
 
-  const salt = raw.slice(0, 16);
-  const iv = raw.slice(16, 28);
-  const data = raw.slice(28);
+    const key = await this.deriveKey(password, salt);
+    try {
+      const decrypted = await crypto.subtle.decrypt(
+        { name:"AES-GCM", iv: iv },
+        key,
+        ciphertext
+      );
+      if(decrypted.byteLength !== size) console.warn("Size mismatch!");
+      return new Blob([decrypted]);
+    } catch(e) {
+      throw new Error("Decryption failed. Wrong password or corrupted file.");
+    }
+  }
 
-  const key = await deriveKey(password, salt);
-
-  return crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
-    key,
-    data
-  );
+  generatePassword() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*";
+    let pwd = "";
+    for(let i=0;i<100;i++) pwd += chars[Math.floor(Math.random()*chars.length)];
+    return pwd;
+  }
 }
