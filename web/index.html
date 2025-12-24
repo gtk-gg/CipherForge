@@ -1,84 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CipherForge</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CipherForge 2036</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="assets/favicon.ico">
 </head>
 <body>
 
-<!-- START WARNING -->
-<div id="screen-warning" class="screen">
-  <div class="panel glow enter">
-    <h1>CipherForge</h1>
-    <p class="warning-text">
-      This tool is intended for <b>educational and personal data protection</b> purposes only.
-      <br><br>
-      The developer does <b>not promote or support malicious usage</b> of encryption.
-      <br><br>
-      You are solely responsible for files you encrypt.
-      <br><br>
-      <span class="danger">Lost passwords = permanently lost files.</span>
+<div id="overlay" class="overlay">
+  <div class="warning-box">
+    <h1>⚠️ IMPORTANT WARNING ⚠️</h1>
+    <p>
+      This tool is <strong>FOR EDUCATIONAL PURPOSES ONLY</strong>.<br>
+      Do NOT use for malicious or illegal activities.<br>
+      Encryption is irreversible without the password.<br>
+      Save passwords securely — they cannot be recovered.
     </p>
-    <button id="acceptBtn">I Understand & Continue</button>
+    <button id="acceptBtn">I Accept</button>
   </div>
 </div>
 
-<!-- FILE SELECT -->
-<div id="screen-file" class="screen hidden">
-  <div class="drop-zone glow" id="dropZone">
-    <h2>Drop file anywhere</h2>
-    <p>or click to browse</p>
-    <input type="file" id="fileInput" hidden>
-  </div>
-</div>
+<div id="app" class="app hidden">
+  <header>
+    <h1>CipherForge 🔒</h1>
+    <a href="https://github.com/gtkthecoder" target="_blank">
+      <img src="assets/github.svg" alt="GitHub" class="github-logo">
+    </a>
+  </header>
 
-<!-- ACTION -->
-<div id="screen-action" class="screen hidden">
-  <div class="panel glow">
-    <h2>Choose Action</h2>
-    <button id="encryptBtn">Encrypt</button>
-    <button id="decryptBtn">Decrypt</button>
-  </div>
-</div>
-
-<!-- PASSWORD -->
-<div id="screen-password" class="screen hidden">
-  <div class="panel glow">
-    <h2>Password</h2>
-
-    <label class="switch">
-      <input type="checkbox" id="autoPassword">
-      <span class="slider"></span>
-      Generate strong password
-    </label>
-
-    <input type="password" id="passwordInput" placeholder="Enter password">
-
-    <div id="generatedBox" class="hidden">
-      <textarea id="generatedPassword" readonly></textarea>
-      <button id="copyBtn">Copy</button>
+  <main>
+    <div id="fileDrop" class="file-drop">
+      <p>Drag & drop your file here or click to select</p>
+      <input type="file" id="fileInput" hidden>
+      <span id="selectedFile">No file selected</span>
     </div>
 
-    <button id="proceedBtn">Start</button>
-  </div>
-</div>
+    <div class="menu">
+      <button id="encryptBtn">Encrypt File</button>
+      <button id="decryptBtn">Decrypt File</button>
+      <button id="methodsBtn">Encryption Methods</button>
+    </div>
 
-<!-- STATUS -->
-<div id="screen-status" class="screen hidden">
-  <div class="panel glow">
-    <h2 id="statusText"></h2>
-    <button id="backBtn">Back to Main Menu</button>
-  </div>
-</div>
+    <div id="passwordSection" class="password-section hidden">
+      <h3>Generated Password (~100 chars)</h3>
+      <textarea id="genPassword" readonly></textarea>
+      <button id="copyPassword">Copy</button>
+    </div>
 
-<!-- FOOTER -->
-<footer>
-  <span>© 2025–2026 CipherForge</span>
-  <a href="https://github.com/gtkthecoder" target="_blank">
-    <img src="assets/github.svg" alt="GitHub">
-  </a>
-</footer>
+    <div id="statusSection" class="status-section hidden">
+      <p id="statusText"></p>
+      <button id="backToMenu">Back to Menu</button>
+    </div>
+  </main>
+</div>
 
 <script src="crypto.js"></script>
 <script src="ui.js"></script>
