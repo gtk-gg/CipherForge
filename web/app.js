@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusText = document.getElementById('statusText');
     const backToMenu = document.getElementById('backToMenu');
 
+    // Encrypt
     encryptBtn.addEventListener('click', async () => {
         const file = window.getSelectedFile();
         const password = window.getUserPassword();
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Decrypt
     decryptBtn.addEventListener('click', async () => {
         const file = window.getSelectedFile();
         const password = window.getUserPassword();
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Back to menu
     backToMenu.addEventListener('click', () => {
         statusSection.classList.add('hidden');
     });
