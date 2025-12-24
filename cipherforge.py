@@ -234,6 +234,10 @@ def show_encryption_methods():
 2. ENCRYPTION: XOR-based stream cipher, chunk-by-chunk, 256-bit key
 3. INTEGRITY: SHA-256 checksum, file size verification
 4. SECURITY: No password storage, memory-safe, no recovery possible
+5. ⚠️ IMPORTANT:
+   • Without correct password, decryption is mathematically impossible
+   • Each file has unique encryption parameters
+   • Lost password = permanently encrypted data, So please save the password used for encrypting your file
 """)
     input("\n➤ Press Enter to return...")
 
