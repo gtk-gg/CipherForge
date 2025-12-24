@@ -10,54 +10,53 @@
 
 <!-- ACCEPT OVERLAY -->
 <div id="overlay" class="overlay">
-    <div class="overlay-content">
-        <h2>⚠️ IMPORTANT WARNING ⚠️</h2>
-        <p>This tool is for educational purposes only. Do not use for malicious or illegal activities.</p>
-        <button id="acceptBtn">ACCEPT</button>
-    </div>
+  <div class="overlay-content">
+    <h2>⚠️ WARNING ⚠️</h2>
+    <p>Educational purposes only. Do not use for malicious or illegal activities.</p>
+    <button id="acceptBtn">ACCEPT</button>
+  </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="app" class="hidden">
 
-    <!-- Step 1: File selection -->
-    <div id="stepFile" class="step">
-        <h2>📁 Choose a file</h2>
-        <div id="fileDrop" class="drop-area">Drag & Drop or Click to Select File</div>
-        <input type="file" id="fileInput" style="display:none">
-        <p id="selectedFile"></p>
-    </div>
+  <!-- Step 1: File selection -->
+  <div id="stepFile" class="step">
+    <h2>📁 Choose a file</h2>
+    <div id="fileDrop" class="drop-area">Drag & Drop or Click to Select File</div>
+    <input type="file" id="fileInput" hidden>
+    <p id="selectedFile"></p>
+  </div>
 
-    <!-- Step 2: Encrypt or Decrypt -->
-    <div id="stepAction" class="step hidden">
-        <h2>🔐 Choose Action</h2>
-        <button id="encryptBtn" disabled>Encrypt</button>
-        <button id="decryptBtn" disabled>Decrypt</button>
-    </div>
+  <!-- Step 2: Encrypt / Decrypt -->
+  <div id="stepAction" class="step hidden">
+    <h2>🔐 Choose Action</h2>
+    <button id="encryptBtn" disabled>Encrypt</button>
+    <button id="decryptBtn" disabled>Decrypt</button>
+  </div>
 
-    <!-- Step 3: Password options -->
-    <div id="passwordOptions" class="step hidden">
-        <h2>🔒 Password Options</h2>
-        <button id="ownPasswordBtn">Use My Own Password</button>
-        <button id="genPasswordBtn">Generate Strong Password (~100 chars)</button>
-        <input type="text" id="genPassword" readonly>
-        <button id="copyPassword">Copy Password</button>
-    </div>
+  <!-- Step 3: Password Options -->
+  <div id="passwordOptions" class="step hidden">
+    <h2>🔒 Password</h2>
+    <button id="ownPasswordBtn">Use My Own Password</button>
+    <button id="genPasswordBtn">Generate Strong Password (~100 chars)</button>
+    <input type="text" id="genPassword" readonly>
+    <button id="copyPassword">Copy</button>
+  </div>
 
-    <!-- Step 4: Status & download -->
-    <div id="statusSection" class="step hidden">
-        <h2>Status</h2>
-        <p id="statusText"></p>
-        <button id="backToMenu">Back to Main Menu</button>
-    </div>
+  <!-- Step 4: Status / Download -->
+  <div id="statusSection" class="step hidden">
+    <p id="statusText"></p>
+    <button id="backToMenu">Back to Main Menu</button>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <a href="https://github.com/gtkthecoder" target="_blank">
-            <img src="assets/github.svg" alt="GitHub" class="github-icon">
-        </a>
-        <p>© 2025-26 CipherForge</p>
-    </footer>
+  <!-- Footer -->
+  <footer>
+    <a href="https://github.com/gtkthecoder" target="_blank">
+      <img src="assets/github.svg" alt="GitHub" class="github-icon">
+    </a>
+    <p>© 2025-26 CipherForge</p>
+  </footer>
 
 </div>
 
