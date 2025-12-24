@@ -159,7 +159,7 @@ Choose option `3` from main menu to see:
 5. ⚠️ IMPORTANT:
    • Without correct password, decryption is mathematically impossible
    • Each file has unique encryption parameters
-   • Lost password = permanently encrypted data
+   • Lost password = permanently encrypted data, So please save the password used for encrypting your file
 ➤ Press Enter to return...
 ```
 
