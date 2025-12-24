@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusText = document.getElementById('statusText');
     const backToMenu = document.getElementById('backToMenu');
 
-    // Encrypt
     encryptBtn.addEventListener('click', async () => {
         const file = window.getSelectedFile();
         const password = window.getUserPassword();
@@ -22,12 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
             a.download = file.name + ".encrypted";
             a.click();
             statusText.textContent = `Encryption complete: ${file.name}.encrypted`;
-        } catch(e){
-            statusText.textContent = `Error: ${e.message}`;
-        }
+        } catch(e){ statusText.textContent = `Error: ${e.message}`; }
     });
 
-    // Decrypt
     decryptBtn.addEventListener('click', async () => {
         const file = window.getSelectedFile();
         const password = window.getUserPassword();
@@ -41,18 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-
             let originalName = file.name.replace(/\.encrypted$/,"") || "decrypted_file";
             a.download = originalName;
             a.click();
             statusText.textContent = `Decryption complete: ${originalName}`;
-        } catch(e){
-            statusText.textContent = `Error: ${e.message}`;
-        }
+        } catch(e){ statusText.textContent = `Error: ${e.message}`; }
     });
 
-    // Back to menu
-    backToMenu.addEventListener('click', () => {
-        statusSection.classList.add('hidden');
-    });
+    backToMenu.addEventListener('click', () => { statusSection.classList.add('hidden'); });
 });
