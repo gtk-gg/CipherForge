@@ -163,6 +163,19 @@ Choose option `3` from main menu to see:
 ➤ Press Enter to return...
 ```
 
+## 🌐 **Web Version**
+
+CipherForge is also available as a **fully functional web client**, so you can encrypt and decrypt files directly in your browser without installing anything.
+
+🔗 **Try it online:** [https://cipherforgee.vercel.app](https://cipherforgee.vercel.app)
+
+- Works with all major browsers
+- Drag & drop or select files manually
+- Strong AES-256-GCM encryption
+- Generate strong passwords or use your own
+- Files are processed locally — **nothing is uploaded to a server**
+
+
 ## 🛠️ **Technical Details**
 
 ### **Supported File Types**
