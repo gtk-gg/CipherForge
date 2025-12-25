@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CipherForge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- START WARNING -->
+<div id="screen-warning" class="screen">
+  <div class="panel glow enter">
+    <h1>CipherForge</h1>
+    <p class="warning-text">
+      This tool is intended for <b>educational and personal data protection</b> purposes only.
+      <br><br>
+      The developer does <b>not promote or support malicious usage</b> of encryption.
+      <br><br>
+      You are solely responsible for files you encrypt.
+      <br><br>
+      <span class="danger">Lost passwords = permanently lost files.</span>
+    </p>
+    <button id="acceptBtn">I Understand & Continue</button>
+  </div>
+</div>
+
+<!-- FILE SELECT -->
+<div id="screen-file" class="screen hidden">
+  <div class="drop-zone glow" id="dropZone">
+    <h2>Drop file anywhere</h2>
+    <p>or click to browse</p>
+    <input type="file" id="fileInput" hidden>
+  </div>
+</div>
+
+<!-- ACTION -->
+<div id="screen-action" class="screen hidden">
+  <div class="panel glow">
+    <h2>Choose Action</h2>
+    <button id="encryptBtn">Encrypt</button>
+    <button id="decryptBtn">Decrypt</button>
+  </div>
+</div>
+
+<!-- PASSWORD -->
+<div id="screen-password" class="screen hidden">
+  <div class="panel glow">
+    <h2>Password</h2>
+
+    <!-- ✅ ONLY CHANGE IS THIS ID -->
+    <label class="switch" id="autoPasswordWrap">
+      <input type="checkbox" id="autoPassword">
+      <span class="slider"></span>
+      Generate strong password
+    </label>
+
+    <input type="password" id="passwordInput" placeholder="Enter password">
+
+    <div id="generatedBox" class="hidden">
+      <textarea id="generatedPassword" readonly></textarea>
+      <button id="copyBtn">Copy</button>
+    </div>
+
+    <button id="proceedBtn">Start</button>
+  </div>
+</div>
+
+<!-- STATUS -->
+<div id="screen-status" class="screen hidden">
+  <div class="panel glow">
+    <h2 id="statusText"></h2>
+    <button id="backBtn">Back to Main Menu</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025–2026 CipherForge</span>
+  <a href="https://github.com/gtkthecoder" target="_blank">
+    <img src="assets/github.svg" alt="GitHub">
+  </a>
+</footer>
+
+<script src="crypto.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
