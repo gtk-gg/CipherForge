@@ -1,11 +1,9 @@
 # 🔐 **CipherForge - Secure File Encryption**
 
-[![CipherForge Web](https://img.shields.io/badge/Web-CipherForge-red?style=flat-square)](https://cipherforgee.vercel.app)
-![CipherForge Banner](https://img.shields.io/badge/CipherForge-Secure%20Encryption-blue)](https://github.com/gtkthecoder/CipherForge)
+[![CipherForge Web](https://img.shields.io/badge/Web-CipherForge-blue?style=flat-square)](https://cipherforgee.vercel.app)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![GitHub](https://img.shields.io/badge/GitHub-gtk--gg-lightgrey)
-![Website for the Repo](cipherforgee.vercel.app)
 
 **CipherForge** is a powerful, user-friendly file encryption tool built in Python. Encrypt any file type with extremely strong encryption methods and keep your data safe from unauthorized access.
 
