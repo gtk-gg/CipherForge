@@ -1,10 +1,10 @@
-// crypto.js
-
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-// derive AES-256 key from password
-async function deriveKey(password, salt) {
+/* ===============================
+   KEY DERIVATION (PBKDF2)
+================================ */
+async function getKey(password, salt) {
   const baseKey = await crypto.subtle.importKey(
     "raw",
     encoder.encode(password),
@@ -30,57 +30,66 @@ async function deriveKey(password, salt) {
   );
 }
 
-// ENCRYPT
-async function encryptData(arrayBuffer, password) {
+/* ===============================
+   ENCRYPT
+   Stores MIME type safely
+================================ */
+async function encryptData(buffer, password, mimeType) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv = crypto.getRandomValues(new Uint8Array(12));
-
-  const key = await deriveKey(password, salt);
+  const key = await getKey(password, salt);
 
   const encrypted = await crypto.subtle.encrypt(
-    {
-      name: "AES-GCM",
-      iv
-    },
+    { name: "AES-GCM", iv },
     key,
-    arrayBuffer
+    buffer
   );
 
-  // combine: [salt][iv][ciphertext]
-  const result = new Uint8Array(
-    salt.byteLength + iv.byteLength + encrypted.byteLength
+  const meta = encoder.encode(mimeType);
+  const metaLen = new Uint8Array([meta.length]);
+
+  const output = new Uint8Array(
+    16 + 12 + 1 + meta.length + encrypted.byteLength
   );
 
-  result.set(salt, 0);
-  result.set(iv, salt.byteLength);
-  result.set(new Uint8Array(encrypted), salt.byteLength + iv.byteLength);
+  let offset = 0;
+  output.set(salt, offset); offset += 16;
+  output.set(iv, offset); offset += 12;
+  output.set(metaLen, offset); offset += 1;
+  output.set(meta, offset); offset += meta.length;
+  output.set(new Uint8Array(encrypted), offset);
 
-  return new Blob([result], { type: "application/octet-stream" });
+  return output.buffer;
 }
 
-// DECRYPT
+/* ===============================
+   DECRYPT
+   Restores MIME type
+================================ */
 async function decryptData(file, password) {
-  const buffer = await file.arrayBuffer();
-  const data = new Uint8Array(buffer);
+  const data = new Uint8Array(await file.arrayBuffer());
 
-  const salt = data.slice(0, 16);
-  const iv = data.slice(16, 28);
-  const ciphertext = data.slice(28);
+  let offset = 0;
+  const salt = data.slice(offset, offset + 16); offset += 16;
+  const iv = data.slice(offset, offset + 12); offset += 12;
 
-  const key = await deriveKey(password, salt);
+  const metaLen = data[offset]; offset += 1;
+  const mimeType = decoder.decode(
+    data.slice(offset, offset + metaLen)
+  );
+  offset += metaLen;
 
-  try {
-    const decrypted = await crypto.subtle.decrypt(
-      {
-        name: "AES-GCM",
-        iv
-      },
-      key,
-      ciphertext
-    );
+  const encrypted = data.slice(offset);
+  const key = await getKey(password, salt);
 
-    return decrypted;
-  } catch (e) {
-    throw new Error("Wrong password or corrupted file");
-  }
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    encrypted
+  );
+
+  return {
+    buffer: decrypted,
+    mimeType
+  };
 }
